@@ -1,0 +1,16 @@
+name: dev-ci (sandbox S-22)
+on:
+  pull_request:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Report event only
+        env:
+          EVENT: ${{ github.event_name }}
+        run: echo "CG_DUMMY_MARKER=S22-dev-ci event=$EVENT"
