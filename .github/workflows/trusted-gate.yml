@@ -1,0 +1,27 @@
+
+name: trusted-gate (sandbox S-22)
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Report event only (no PR code is checked out)
+        env:
+          EVENT: ${{ github.event_name }}
+          REF: ${{ github.ref }}
+          RUN_SHA: ${{ github.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          echo "CG_DUMMY_MARKER=S22-trusted-gate"
+          echo "event=$EVENT ref=$REF run_sha=$RUN_SHA head_sha=$HEAD_SHA pr=$PR_NUMBER"
+          git --version
+          python3 --version
